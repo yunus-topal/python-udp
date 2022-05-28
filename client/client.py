@@ -1,8 +1,18 @@
 #!/usr/bin/env python3
 
 import socket
+import time
+import sys
+from wsgiref.simple_server import server_version
 
-client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)  # UDP
+server_address = sys.argv[1]
+print("server address: ", server_address)
+
+f = open("output.txt","a")
+f.write(f"inside your walls, ip: {server_address} \n")
+f.flush()
+
+client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 
 # Enable port reusage so we will be able to run multiple clients and servers on single (host, port).
 # Do not use socket.SO_REUSEADDR except you using linux(kernel<3.9): goto https://stackoverflow.com/questions/14388706/how-do-so-reuseaddr-and-so-reuseport-differ for more information.
@@ -14,8 +24,15 @@ client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
 # Enable broadcasting mode
 client.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
-client.bind(("", 37020))
+# Set a timeout so the socket does not block
+# indefinitely when trying to receive data.
+client.settimeout(0.2)
+message = b"your very important message"
+counter = 0
 while True:
-    # Thanks @seym45 for a fix
-    data, addr = client.recvfrom(1024)
-    print("received message: %s" % data)
+    client.sendto(message, (server_address, 37020))
+    f.write(f"message {counter} sent!\n")
+    f.flush()
+    time.sleep(1)
+    counter += 1
+

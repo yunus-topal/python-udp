@@ -1,13 +1,37 @@
-# python-udp
-Python udp broadcast client-server example ([previously](https://gist.github.com/ninedraft/7c47282f8b53ac015c1e326fffb664b5))
+# docker steps
 
----
+- server imageı oluştur
+    + docker build -t emretopal20/cmpe492-server .
+- push server image
+    + docker push emretopal20/cmpe492-server 
 
-Works for python 3.7 and 2.7 for **Mac OS** and **Linux(kernel>=3.9)** hosts. If you're using **linux(kernel<3.9)**, then use `socket.O_REUSEADDR` instead of `socket.SO_REUSEPORT` to share `(host, port)` between multiple clients and servers.
+- client için de aynı şey
+    + docker build -t emretopal20/cmpe492-client .
+    + docker push emretopal20/cmpe492-client 
 
-Tricks and traps:
+# kubernetes steps
 
-+ Socket portability issues: [How do SO_REUSEADDR and SO_REUSEPORT differ?](https://stackoverflow.com/questions/14388706/how-do-so-reuseaddr-and-so-reuseport-differ);
-+ [Awesome "Socket Programming HOWTO"](https://docs.python.org/3/howto/sockets.html);
+- cluster oluştur
+   + k3d cluster create -a 2. 
 
-Have a question? [Make an issue :3](https://github.com/ninedraft/python-udp/issues/new)
+- server deploymentı oluştur
+  + kubectl apply -f server-deployment.yaml
+
+- client kodunda server ip adresini ekleyip yeniden build et.
+
+- client deploy et
+    + kubectl apply -f client-deployment.yaml
+
+# aktarımı görüntüleme
+
+- podun içine girmek için:
+    + kubectl exec --stdin --tty <pod-name> — /bin/bash
+- çalışan python processleri için:
+    + ps -ef | grep python
+- processin console outputunu görmek için:
+    + cat /proc/<pid>/fd/1
+
+- pod görünlüme:
+    + kubectl get pods -o wide
+
+

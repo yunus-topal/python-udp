@@ -1,0 +1,19 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: udpserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: udpserver
+  template:
+    metadata:
+      labels:
+        app: udpserver
+    spec:
+      containers:
+      - name: server
+        image: emretopal20/cmpe492-server
+        ports:
+        - containerPort: 3000

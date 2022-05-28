@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 
 import socket
-import time
 
-server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+f = open("output.txt","a")
+f.write("inside your walls\n")
+f.flush()
+print("here")
+server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)  # UDP
 
 # Enable port reusage so we will be able to run multiple clients and servers on single (host, port).
 # Do not use socket.SO_REUSEADDR except you using linux(kernel<3.9): goto https://stackoverflow.com/questions/14388706/how-do-so-reuseaddr-and-so-reuseport-differ for more information.
@@ -15,12 +18,13 @@ server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
 # Enable broadcasting mode
 server.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
-# Set a timeout so the socket does not block
-# indefinitely when trying to receive data.
-server.settimeout(0.2)
-message = b"your very important message"
+server.bind(("", 37020))
+
+counter = 0
 while True:
-    server.sendto(message, ("localhost", 37020))
-    print("message sent!", flush=True)
-    time.sleep(1)
+    # Thanks @seym45 for a fix
+    data, addr = server.recvfrom(1024)
+    f.write(f"{counter} received message: {data}\n")
+    f.flush()
+    counter += 1
 

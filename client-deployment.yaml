@@ -1,0 +1,24 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: udpclient
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: udpclient
+  template:
+    metadata:
+      labels:
+        app: udpclient
+    spec:
+      containers:
+      - name: client
+        image: emretopal20/cmpe492-client
+        ports:
+        - containerPort: 37020
+        env:
+        - name: SERVER_IP
+          value: "10.42.0.4"
+        command: ["python", "client.py", "10.42.0.4"]
+
