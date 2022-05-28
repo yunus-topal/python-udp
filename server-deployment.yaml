@@ -12,8 +12,15 @@ spec:
       labels:
         app: udpserver
     spec:
+      volumes:
+        - name: mymount
+          persistentVolumeClaim:
+            claimName: mypvc
       containers:
       - name: server
         image: emretopal20/cmpe492-server
         ports:
         - containerPort: 3000
+        volumeMounts:
+          - mountPath: "/storage"
+            name: mymount

@@ -3,14 +3,13 @@ kind: PersistentVolume
 metadata:
   name: mypv
 spec:
+  storageClassName: mystorage
   capacity:
     storage: 1Gi
   accessModes:
   - ReadWriteMany
-  persistentVolumeReclaimPolicy: Delete
-  storageClassName: mystorage
-  local:
-    path: /mnt/disks/ssd1
+  hostPath:
+    path: "/mnt/data"
   nodeAffinity:
     required:
       nodeSelectorTerms:

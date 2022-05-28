@@ -2,13 +2,10 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mypvc
-  namespace: default
 spec:
-  volumeMode: Filesystem
+  storageClassName: mystorage
+  accessModes:
+  - ReadWriteMany
   resources:
     requests:
       storage: 1Gi
-  accessModes:
-  - ReadWriteMany
-  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
-  volumeName: mypv
