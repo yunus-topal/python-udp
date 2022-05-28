@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
 import socket
+import sys
 
-f = open("output.txt","a")
-f.write("inside your walls\n")
-f.flush()
-print("here")
+logfile = sys.argv[1]
+
+f = open(logfile,"a+")
+print(f"inside your walls, logfile: {f}")
 server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)  # UDP
 
 # Enable port reusage so we will be able to run multiple clients and servers on single (host, port).
@@ -27,4 +28,3 @@ while True:
     f.write(f"{counter} received message: {data}\n")
     f.flush()
     counter += 1
-

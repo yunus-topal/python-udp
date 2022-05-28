@@ -21,6 +21,11 @@ spec:
         image: emretopal20/cmpe492-server
         ports:
         - containerPort: 3000
+        env:
+        - name: LOGFILE_PATH
+          value: "/storage/server.log"
+        command: ["python", "server.py"]
+        args: ["/storage/server.log"]
         volumeMounts:
           - mountPath: "/storage"
             name: mymount

@@ -3,14 +3,9 @@
 import socket
 import time
 import sys
-from wsgiref.simple_server import server_version
 
 server_address = sys.argv[1]
-print("server address: ", server_address)
-
-f = open("output.txt","a")
-f.write(f"inside your walls, ip: {server_address} \n")
-f.flush()
+print(f"inside your walls, ip: {server_address}")
 
 client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 
@@ -31,8 +26,7 @@ message = b"your very important message"
 counter = 0
 while True:
     client.sendto(message, (server_address, 37020))
-    f.write(f"message {counter} sent!\n")
-    f.flush()
+    print(f"message {counter} sent!")
     time.sleep(1)
     counter += 1
 

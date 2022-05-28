@@ -19,6 +19,7 @@ spec:
         - containerPort: 37020
         env:
         - name: SERVER_IP
-          value: "10.42.0.4"
-        command: ["python", "client.py", "10.42.0.4"]
+          value: "172.17.0.7"
+        command: ["python", "client.py"]
+        args: ["172.17.0.7"]
 
