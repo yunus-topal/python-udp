@@ -1,0 +1,17 @@
+apiVersion: v1 
+kind: Pod
+metadata:
+  name: udpclient
+spec:
+  containers:
+  - name: client
+    image: emretopal20/cmpe492-client
+    command: ["python", "client.py"]
+    args: ["$(SERVER_IP)"]
+    ports:
+    - containerPort: 37020
+      protocol: UDP
+    env:
+    - name: SERVER_IP
+      value: "172.17.0.3"
+
