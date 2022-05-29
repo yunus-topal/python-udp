@@ -26,6 +26,7 @@
 
 - podun içine girmek için:
     + `kubectl exec --stdin --tty <pod-name> -- /bin/bash`
+        + `kubectl exec --stdin --tty udpserver -- /bin/bash`
 - çalışan python processleri için:
     + `ps -ef | grep python`
 - processin console outputunu görmek için:

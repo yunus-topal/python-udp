@@ -1,0 +1,23 @@
+apiVersion: v1 
+kind: Pod
+metadata:
+  name: udpserver
+spec:
+  containers:
+  - name: server
+    image: emretopal20/cmpe492-server
+    command: ["python", "server.py"]
+    args: ["$(LOGFILE_PATH)"]
+    ports:
+    - containerPort: 3000
+      protocol: UDP
+    env:
+    - name: LOGFILE_PATH
+      value: "/storage/server.log"
+    volumeMounts:
+      - mountPath: "/storage"
+        name: mymount
+  volumes:
+    - name: mymount
+      persistentVolumeClaim:
+        claimName: mypvc
